@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const CHART_COLORS = [
+  "hsl(152, 60%, 46%)",
   "hsl(217, 91%, 60%)",
-  "hsl(160, 60%, 45%)",
   "hsl(280, 65%, 60%)",
   "hsl(35, 92%, 55%)",
   "hsl(350, 80%, 60%)",
