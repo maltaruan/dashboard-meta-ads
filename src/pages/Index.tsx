@@ -1,10 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase, MetaAdsInsight } from "@/lib/supabase";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { FilterBar } from "@/components/dashboard/FilterBar";
 import { MetricSelector } from "@/components/dashboard/MetricSelector";
 import { KpiCards } from "@/components/dashboard/KpiCards";
 import { MetricsChart } from "@/components/dashboard/MetricsChart";
+import { ConversionFunnel } from "@/components/dashboard/ConversionFunnel";
 import { DataTable } from "@/components/dashboard/DataTable";
 import { ThemeToggle } from "@/components/dashboard/ThemeToggle";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,7 +34,7 @@ const getInitialMetrics = (): MetricKey[] => {
       if (parsed.length > 0) return parsed;
     }
   } catch {}
-  return ["impressions", "spend", "ctr", "cpc"];
+  return ["spend", "clicks", "ctr", "cpc", "cpm", "impressions"];
 };
 
 const Index = () => {
@@ -82,55 +85,81 @@ const Index = () => {
   }, [rawData, selectedCampaigns, selectedAdSets]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BarChart3 className="h-6 w-6 text-primary" />
-            <h1 className="text-lg font-bold text-foreground">Meta Ads Dashboard</h1>
-          </div>
-          <ThemeToggle />
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar />
+
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Top bar */}
+          <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-sm">
+            <div className="flex h-14 items-center justify-between px-4 lg:px-6">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger />
+                <div>
+                  <h1 className="text-lg font-bold text-foreground">Dashboard de Performance</h1>
+                  <p className="text-xs text-muted-foreground">Métricas de campanhas Meta Ads · Atualizado em tempo real</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1 p-4 lg:p-6 space-y-6">
+            {/* Filters */}
+            <div className="flex flex-wrap items-center gap-3">
+              <FilterBar
+                dateRange={dateRange}
+                onDateRangeChange={setDateRange}
+                campaigns={campaigns}
+                selectedCampaigns={selectedCampaigns}
+                onCampaignsChange={setSelectedCampaigns}
+                adSets={adSets}
+                selectedAdSets={selectedAdSets}
+                onAdSetsChange={setSelectedAdSets}
+                ads={ads}
+                selectedAds={selectedAds}
+                onAdsChange={setSelectedAds}
+              />
+              <MetricSelector selected={selectedMetrics} onChange={setSelectedMetrics} />
+            </div>
+
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Skeleton key={i} className="h-28 rounded-xl" />
+                ))}
+              </div>
+            ) : filteredData.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+                <BarChart3 className="h-12 w-12 mb-4 opacity-40" />
+                <p className="text-lg font-medium">Nenhum dado encontrado</p>
+                <p className="text-sm">Ajuste os filtros para visualizar os dados.</p>
+              </div>
+            ) : (
+              <>
+                {/* KPI Cards */}
+                <KpiCards data={filteredData} metrics={selectedMetrics} />
+
+                {/* Chart + Funnel side by side */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2">
+                    <MetricsChart data={filteredData} metrics={selectedMetrics} />
+                  </div>
+                  <div className="lg:col-span-1">
+                    <ConversionFunnel data={filteredData} />
+                  </div>
+                </div>
+
+                {/* Data Table */}
+                <DataTable data={filteredData} metrics={selectedMetrics} />
+              </>
+            )}
+          </main>
         </div>
-      </header>
-
-      <main className="container py-6 space-y-6">
-        <FilterBar
-          dateRange={dateRange}
-          onDateRangeChange={setDateRange}
-          campaigns={campaigns}
-          selectedCampaigns={selectedCampaigns}
-          onCampaignsChange={setSelectedCampaigns}
-          adSets={adSets}
-          selectedAdSets={selectedAdSets}
-          onAdSetsChange={setSelectedAdSets}
-          ads={ads}
-          selectedAds={selectedAds}
-          onAdsChange={setSelectedAds}
-        />
-
-        <MetricSelector selected={selectedMetrics} onChange={setSelectedMetrics} />
-
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-28 rounded-xl" />
-            ))}
-          </div>
-        ) : filteredData.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-            <BarChart3 className="h-12 w-12 mb-4 opacity-40" />
-            <p className="text-lg font-medium">Nenhum dado encontrado</p>
-            <p className="text-sm">Ajuste os filtros para visualizar os dados.</p>
-          </div>
-        ) : (
-          <>
-            <KpiCards data={filteredData} metrics={selectedMetrics} />
-            <MetricsChart data={filteredData} metrics={selectedMetrics} />
-            <DataTable data={filteredData} metrics={selectedMetrics} />
-          </>
-        )}
-      </main>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 };
 

@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const CHART_COLORS = [
+  "hsl(152, 60%, 46%)",
   "hsl(217, 91%, 60%)",
-  "hsl(160, 60%, 45%)",
   "hsl(280, 65%, 60%)",
   "hsl(35, 92%, 55%)",
   "hsl(350, 80%, 60%)",
@@ -56,7 +56,7 @@ export function MetricsChart({ data, metrics }: MetricsChartProps) {
     <Card className="border bg-card shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-base font-semibold">Performance ao longo do tempo</CardTitle>
+          <CardTitle className="text-base font-semibold">Análise de Performance</CardTitle>
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => setActiveMetric("all")}
