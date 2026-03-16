@@ -56,7 +56,7 @@ export function MetricsChart({ data, metrics }: MetricsChartProps) {
     <Card className="border bg-card shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <CardTitle className="text-base font-semibold">Performance ao longo do tempo</CardTitle>
+          <CardTitle className="text-base font-semibold">Análise de Performance</CardTitle>
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => setActiveMetric("all")}
