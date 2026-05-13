@@ -27,8 +27,6 @@ export const supabase = createClient<Database>(
       autoRefreshToken: true,
       detectSessionInUrl: true,
     },
-    db: {
-      schema: 'dashboard',
-    },
+    // schema 'public' (default) — schema 'dashboard' não existe mais após reset do backend
   }
 );

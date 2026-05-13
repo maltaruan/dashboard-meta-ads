@@ -64,7 +64,7 @@ export default function Integracao() {
 
   async function loadIntegrations() {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('integrations')
       .select('id, account_id, provider, external_account_name, status, last_sync_at, last_error, accounts(name, slug)')
       .order('provider');
