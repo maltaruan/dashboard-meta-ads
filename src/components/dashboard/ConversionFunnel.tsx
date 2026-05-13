@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { MetaAdsInsight } from "@/lib/supabase";
+import type { MetaAdsInsight } from "@/types/meta";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ConversionFunnelProps {

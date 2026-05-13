@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { MetaAdsInsight } from "@/lib/supabase";
+import type { MetaAdsInsight } from "@/types/meta";
 import { MetricKey, ALL_METRICS } from "@/pages/Index";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Eye, MousePointerClick, DollarSign, BarChart2, Percent, Repeat } from "lucide-react";

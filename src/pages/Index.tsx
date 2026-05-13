@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase, MetaAdsInsight } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
+import type { MetaAdsInsight } from "@/types/meta";
+import { FEATURES } from "@/lib/features";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { FilterBar } from "@/components/dashboard/FilterBar";
@@ -50,14 +52,12 @@ const Index = () => {
 
   const { data: rawData, isLoading } = useQuery({
     queryKey: ["meta-ads-insights"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("meta_ads_insights")
-        .select("*")
-        .order("date_start", { ascending: true });
-      if (error) throw error;
-      return data as MetaAdsInsight[];
+    queryFn: async (): Promise<MetaAdsInsight[]> => {
+      // TODO Sprint 3: substituir por leitura de dashboard.metrics_cache
+      // via Edge Function ou client direto, com mapeamento JSON → MetaAdsInsight.
+      return [];
     },
+    enabled: FEATURES.METRICS_QUERIES,
   });
 
   const filteredData = useMemo(() => {

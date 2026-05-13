@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { MetaAdsInsight } from "@/lib/supabase";
+import type { MetaAdsInsight } from "@/types/meta";
 import { MetricKey, ALL_METRICS } from "@/pages/Index";
 import { formatMetric } from "@/components/dashboard/KpiCards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
