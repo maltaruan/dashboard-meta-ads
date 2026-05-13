@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Supabase CLI metadata local
+supabase/.temp/
+
+# Environment files (anon key é pública, mas .env serve de padrão para nunca commitar)
+.env
+.env.local
+.env.*.local
