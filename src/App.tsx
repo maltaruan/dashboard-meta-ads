@@ -9,6 +9,10 @@ import { AuthenticatedLayout } from "@/components/AuthenticatedLayout";
 import Index from "./pages/Index.tsx";
 import Integracao from "./pages/Integracao.tsx";
 import GA4 from "./pages/GA4.tsx";
+import Criativos from "./pages/Criativos.tsx";
+import Inteligencia from "./pages/Inteligencia.tsx";
+import AnalistaIA from "./pages/AnalistaIA.tsx";
+import Kanban from "./pages/Kanban.tsx";
 import Login from "./pages/Login.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -33,6 +37,10 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/integracao" element={<Integracao />} />
               <Route path="/ga4" element={<GA4 />} />
+              <Route path="/criativos" element={<Criativos />} />
+              <Route path="/inteligencia" element={<Inteligencia />} />
+              <Route path="/analista-ia" element={<AnalistaIA />} />
+              <Route path="/kanban" element={<Kanban />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

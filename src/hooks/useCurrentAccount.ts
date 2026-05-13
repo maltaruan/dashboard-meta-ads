@@ -17,7 +17,7 @@ export function useCurrentAccount() {
     queryFn: async (): Promise<CurrentAccount | null> => {
       if (!user) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('account_members')
         .select('role, account_id, accounts(id, name)')
         .eq('user_id', user.id)
